@@ -254,7 +254,22 @@ public:
 	 * well.
 	 */
 	void AutonomousInit() override {
-        autoLoopCounter = 0;
+		std::string gameData;
+		gameData = frc::DriverStation::GetInstance().GetGameSpecificMessage();
+		if(gameData.length() > 0) {
+			if(gameData[0] == 'L') {
+			//Put left auto code here
+			SmartDashboard::PutString("Switch is on the left!", gameData);
+			DriverStation::ReportError("Switch is on the left!");
+			}
+			else {
+				//Put right auto code here
+				SmartDashboard::PutString("Switch is on the right!", gameData);
+				DriverStation::ReportError("Switch is on the right!");
+			}
+		}
+
+		autoLoopCounter = 0;
 		m_autoSelected = m_chooser.GetSelected();
 		// m_autoSelected = SmartDashboard::GetString(
 		// 		"Auto Selector", kAutoNameDefault);
@@ -268,6 +283,7 @@ public:
 	}
 
 	void AutonomousPeriodic() {
+#if false
 		if (m_autoSelected == kAutoNameCustom) {
 			// Custom Auto goes here
 			if(autoLoopCounter < 100) //Check if we've completed 100 loops (approximately 2 seconds)
@@ -292,6 +308,7 @@ public:
 				} else {
 					m_robotDrive.ArcadeDrive(0.0, 0.0); 	// stop robot
 			}
+#endif
 		}
 	}
 
